@@ -47,12 +47,13 @@ $row = mysql_fetch_array($result);
             #main-container header #menu{float:right}
             #main-container #slider{background:url(imagenes/<?= $row['img_contacto'] ?>) no-repeat; height:150px; display:table; width:100%;}
             #main-container #slider #pagina{text-transform:uppercase;display:table-cell;vertical-align:middle; text-align:right; padding:0 20px 0 0;}
-            #main-container #slider #pagina h1{font-size:60px;letter-spacing:-1px;font-family: 'Open Sans', sans-serif; font-weight:bold}
+            #main-container #slider #pagina h1{font-size:60px;letter-spacing:-1px;font-family: 'Open Sans', sans-serif; font-weight:bold;text-shadow: 2px 2px 2px rgba(255, 255, 255, 0.68);}
             #main-container #slider #pagina h1 span{ color:#FF8D2C}
 
             #main-container #map_canvas{width:100%;height:300px;border:#DADADA solid 1px;margin-top:20px}
 
-            #main-container #formulario{display:table;width:100%; margin-top:20px}
+            #main-container #formulario{display:table;width:70%; margin-top:20px}
+            
             #main-container #formulario ul{display:table-row}
             #main-container #formulario ul li{ display:table-cell; width:50%; vertical-align:middle; padding:10px 0}
             #main-container #mensaje{ margin-top:10px}
@@ -223,6 +224,7 @@ $row = mysql_fetch_array($result);
                         </ul>
                     </form>
                 </div>
+                <iframe scrolling="No" src="http://www.boliviaentusmanos.com/cambio.php" width="248" height="150" frameborder="0"></iframe>
             </div>
 
         </div>

@@ -21,6 +21,19 @@ $row1 = mysql_fetch_array($result);
         <meta charset="utf-8">
         <title><?=$row1['pestana_cont']?></title>
         <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/mystyle.css">
+
+        
+        <script src="js/jquery-pack.js" type="text/javascript"></script>
+        <script src="js/jquery.min.js" type="text/javascript"></script>
+        <!-- required plugin for ajax file upload -->
+        <script src="js/fileuploader.js" type="text/javascript"></script>
+        <!-- The Reveal plugin -->
+        <script src="js/jquery.reveal.js" type="text/javascript"></script>
+        <!-- resizing image -->
+        <script src="js/jquery.imgareaselect.min.js" type="text/javascript"></script>
         <style>
             @import url(http://fonts.googleapis.com/css?family=Muli);
             @import url(http://fonts.googleapis.com/css?family=Open+Sans:800);
@@ -53,9 +66,9 @@ $row1 = mysql_fetch_array($result);
             #main-container header #logo{float:left}
             #main-container header #menu{float:right}
             #main-container #slider{background:url(../imagenes/<?=$row1['img_contacto']?>) no-repeat; height:150px; display:table; width:100%;}
-            #main-container #slider:hover{border:solid 2px #BB0000; cursor: crosshair; background: #CCC;opacity:0.8; filter:alpha(opacity=60); z-index: 2; position: relative}
+            /*#main-container #slider:hover{border:solid 2px #BB0000; cursor: crosshair; background: #CCC;opacity:0.8; filter:alpha(opacity=60); z-index: 2; position: relative}*/
             #main-container #slider #pagina{text-transform:uppercase;display:table-cell;vertical-align:middle; text-align:right; padding:0 20px 0 0;}
-            #main-container #slider #pagina h1{font-size:60px;letter-spacing:-1px;font-family: 'Open Sans', sans-serif; font-weight:bold}
+            #main-container #slider #pagina h1{font-size:60px;letter-spacing:-1px;font-family: 'Open Sans', sans-serif; font-weight:bold;text-shadow: 2px 2px 2px rgba(6, 6, 6, 0.85);}
             #main-container #slider #pagina h1 span{ color:#FF8D2C}
 
             #main-container #mapCanvas{width:100%;height:300px;border:#DADADA solid 1px;margin-top:20px}
@@ -129,6 +142,135 @@ $row1 = mysql_fetch_array($result);
             #admin input:focus {outline:none;}
         </style>
         
+        <script type="text/javascript">
+            $(document).ready(createUploader);
+            $(document).ready(function () {
+                var thumb = $(".thumbnail");
+                $('#thumbnail').imgAreaSelect({aspectRatio: '1:0.14', onSelectChange: preview, parent: '#myModal'});
+
+                $('#save_thumb').click(function () {
+                    var x1 = $('#x1').val();
+                    var y1 = $('#y1').val();
+                    var x2 = $('#x2').val();
+                    var y2 = $('#y2').val();
+                    var w = $('#w').val();
+                    var h = $('#h').val();
+                    if (x1 == "" || y1 == "" || x2 == "" || y2 == "" || w == "" || h == "") {
+                        alert("Tiene que seleccionar un área");
+                        return false;
+                    }
+                    else {
+                        $.ajax({
+                            type: 'POST',
+                            url: "crop.php",
+                            data: "filename=" + $('#filename').val() + "&x1=" + x1 + "&x2=" + x2 + "&y1=" + y1 + "&y2=" + y2 + "&w=" + w + "&h=" + h,
+                            success: function (data) {
+                                var img = "thumb_" + $('#filename').val();
+                                guardarImgServicio(img);
+                                //thumb.attr('src', 'uploads/thumb_' + $('#filename').val());
+                                $('.close-reveal-modal').click();
+                                $('#thumbnail').imgAreaSelect({hide: true, x1: 0, y1: 0, x2: 0, y2: 0});
+                                // let's clear the modal
+                                $('#thumbnail').attr('src', '');
+                                $('#thumb_preview').attr('src', '');
+                                $('#filename').attr('value', '');
+                            },
+                            error: function (data) {
+                                alert(data);
+                            }
+                        });
+
+                        return true;
+                    }
+                });
+            });
+
+            function guardarImgServicio(img) {
+                var dir = "uploads/";
+                $.ajax({
+                    url: 'contactoupdatefondo.php',
+                    type: 'GET',
+                    async: true,
+                    data: 'idc=' + $('#idp').val() + '&dir_imagen=' + dir + '&imagen=' + img,
+                    success: function () {
+                        $("#main-container #slider").css({"background": "url(../imagenes/" + img + ") no-repeat", "height": "150px", "display": "table", "width": "100%"});
+                    },
+                    error: muestraError
+                });
+            }
+
+            function procesaRespuesta(data) {
+                //alert("si->" + data);
+            }
+            function muestraError(data) {
+                alert("error->" + data);
+            }
+
+            function createUploader() {
+                //alert("sa");
+                var button = $('#slider');
+                var uploader = new qq.FileUploaderBasic({
+                    button: document.getElementById('file-uploader'),
+                    action: 'script.php',
+                    allowedExtensions: ['jpg', 'gif', 'png', 'jpeg'],
+                    onSubmit: function (id, fileName) {
+                        // change button text, when user selects file			
+                        //button.text('Uploading');
+                        // Uploding -> Uploading. -> Uploading...
+                        interval = window.setInterval(function () {
+                            var text = button.text();
+                            if (text.length < 13) {
+                                //button.text(text + '.');
+                            } else {
+                                //button.text('Uploading');
+                            }
+                        }, 200);
+                    },
+                    onComplete: function (id, fileName, responseJSON) {
+                        //button.text('Create Thumbnail');
+                        window.clearInterval(interval);
+
+                        if (responseJSON['success'])
+                        {
+                            load_modal(responseJSON['filename']);
+                        }
+                    },
+                    debug: true
+                });
+            }
+
+            function load_modal(filename) {
+                $('#thumbnail').attr('src', "uploads/" + filename);
+                $('#thumb_preview').attr('src', "uploads/" + filename);
+                $('#filename').attr('value', filename);
+                // IE fix
+                if ($.browser.msie) {
+                    $('#thumb_preview_holder').remove();
+                }
+
+                $('#myModal').reveal();
+            }
+
+            function preview(img, selection) {
+                var mythumb = $('#thumbnail');
+                var scaleX = 1100 / selection.width;
+                var scaleY = 150 / selection.height;
+
+                $('#thumbnail + div > img').css({
+                    width: Math.round(scaleX * mythumb.outerWidth()) + 'px',
+                    height: Math.round(scaleY * mythumb.outerHeight()) + 'px',
+                    marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px',
+                    marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
+                });
+                $('#x1').val(selection.x1);
+                $('#y1').val(selection.y1);
+                $('#x2').val(selection.x2);
+                $('#y2').val(selection.y2);
+                $('#w').val(selection.width);
+                $('#h').val(selection.height);
+            }
+        </script>
+        
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
         <?php
             $coor = explode(",",$row1['cordenadas']);
@@ -176,6 +318,7 @@ $row1 = mysql_fetch_array($result);
                 updateMarkerPosition(marker.getPosition());
                 
                 markersArray.push(marker);
+                cargarInvitacion();
             }
 
             function updateMarkerPosition(latLng) {
@@ -262,17 +405,14 @@ $row1 = mysql_fetch_array($result);
         
         <input name="cordenadas" type="hidden" id="cordenadas" size="50" readonly="readonly" value="<?=$row1['cordenadas']?>"/>
         <input type="hidden" id="idp" value="<?=$row1['idcont']?>"/>
-        
-        
-        <div id="pop_imgC" title="Imagen fondo">
-            <form method="POST" id="formfondo" enctype="multipart/form-data">
-                <input type="hidden" value="<?=$row1['idcont']?>" id="idp" name="idp"/>
-                <input type="file" name="img-contacto" id="img-contacto" accept="image/jpeg/png" data-val="true"/>
-            </form>
-        </div>
 
         <div id="pop_inv" title="Invitacion">
-            <input type="text" name="inv-cont" id="inv-cont" size="40" value="<?=$row1['inv_cont']?>"/>
+            <div id="pop_inv_val">
+                <input type="hidden" value="<?=$row1['inv_cont']?>" id="cant_inv"/>
+                <textarea name="inv-cont" id="inv-cont" rows="5" cols="30" maxlength="200" required="true" placeholder="200 caracteres"><?=$row1['inv_cont']?></textarea>
+            </div>
+            <p id="contador"></p>
+            
         </div>
         <div id="admin">
             <div id="loginContainer">
@@ -312,15 +452,40 @@ $row1 = mysql_fetch_array($result);
                 </div>
                 <div class="clear"></div>
             </header>
+            
+            <div id="file-uploader">
             <div id="slider">
                 <div id="pagina">
                     <h1>contactos<span>.</span></h1>
                 </div>
             </div>
+            </div>
+            
+            <!-- modal box -->
+            <div id="myModal" class="reveal-modal" align="center">
+                <h2>Select Thumbnail</h2>
+                <div>
+                    <img src="" id="thumbnail" alt="Create Thumbnail" />
+                    <div id="thumb_preview_holder">
+                        <img src=""  alt="Thumbnail Preview" id="thumb_preview" />
+                    </div>
+                    
+                    <div class="clear"></div>
+                    <input type="hidden" name="filename" value="" id="filename" />
+                    <input type="hidden" name="x1" value="" id="x1" />
+                    <input type="hidden" name="y1" value="" id="y1" />
+                    <input type="hidden" name="x2" value="" id="x2" />
+                    <input type="hidden" name="y2" value="" id="y2" />
+                    <input type="hidden" name="w" value="" id="w" />
+                    <input type="hidden" name="h" value="" id="h" />
+                    <input type="submit" name="upload_thumbnail" value="Save Thumbnail" id="save_thumb" class="button" />
+                    <input type="button" name="cancel" value="X" class="close-reveal-modal" id="cancel_button"/>
+                </div>
+            </div> <!-- end modal box-->            
 
             <div id="mapCanvas"></div>
             <input type="button" value="Clear Marker" onclick="clearOverlays()"/>
-            <input type="button" value="Marcar" onclick="cargarInvitacion()"/>
+            <!--input type="button" value="Marcar" onclick="cargarInvitacion()"/-->
 
             <div>
                 <div id="mensaje">
@@ -381,10 +546,12 @@ $row1 = mysql_fetch_array($result);
             </div>
         </footer>
         
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <!--script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script-->
         <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
         <script>window.jQuery || document.write('<script src="../js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
         <script src="../js/plugins.js"></script>
         <script src="../js/mainC.js"></script>
+        <script src="../js/jquery.validate.js" type="text/javascript"></script>
+        
     </body>
 </html>

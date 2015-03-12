@@ -1,11 +1,13 @@
 $(document).on("ready", inicioC);
 function inicioC() {
+    $('#contador').html("Cantidad de caracteres: " + $('#cant_inv').val().length + "/200");
+    
+    init_contador("inv-cont","contador",200);
+    
     panelC();
     adminpanelC();
     verResultadoC();    
-    
-    cargarFondoC();
-    $("#slider").on("click", funcScont);
+    //$("#slider").on("click", funcScont);
     $("#mensaje").on("click", funcMensaje);
     $("#admin1").on("click", funcrC);
     
@@ -18,23 +20,33 @@ function inicioC() {
         },
         width: 400});
     
-    $("#pop_imgC").dialog({autoOpen: false,
-        buttons:{
-            OK:function(){
-                $(this).dialog("close");
-                //guardarTitulo();
-            }
-        },
-        width: 400});
     
     $("#pop_inv").dialog({autoOpen: false,
         buttons:{
             OK:function(){
                 $(this).dialog("close");
+                
                 cargarInvitacion();
             }
         },
         width: 400});
+}
+function init_contador(idtextarea,idcontador,max){
+    $('#'+idtextarea).keyup(function(){
+        updateContador(idtextarea,idcontador,max);
+    });
+}
+function updateContador(idtextarea,idcontador,max){
+    var contador = $("#"+idcontador);
+    var ta =     $("#"+idtextarea);
+    contador.html("Cantidad de caracteres: " + "0/"+max);
+    
+    contador.html("Cantidad de caracteres: " + ta.val().length+"/"+max);
+    if(parseInt(ta.val().length)>max)
+    {
+        ta.val(ta.val().substring(0,max-1));
+        contador.html("Cantidad de caracteres: " + max+"/"+max);
+    }
 }
 function panelC(){
     var button = $('#loginButton');
@@ -58,10 +70,6 @@ function panelC(){
 }
 function funcrC(){
     ($("#pop_pestanaC").dialog("isOpen") == false) ? $("#pop_pestanaC").dialog("open") : $("#pop_pestanaC").dialog("close") ;   
-}
-
-function funcScont(e) {
-    ($("#pop_imgC").dialog("isOpen") == false) ? $("#pop_imgC").dialog("open") : $("#pop_imgC").dialog("close") ;   
 }
 
 function funcMensaje(e) {
@@ -98,38 +106,8 @@ function invcont() {
     $("#inv_out").text(valor);
 }
 
-
-function cargarFondoC(){
-    $("input[name='img-contacto']").on("change", function () {
-        var a = $("input[name='img-contacto']").val();
-        
-        //alert(a);
-        var formData = new FormData($("#formfondo")[0]);
-        //alert(formData);
-        var ruta = "contacto-fondo.php";
-        $.ajax({
-            url: ruta,
-            type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (datos)
-            {
-                cargaFondoC(datos);
-                $("#pop_imgC").dialog("close") ;
-            },
-            error: function (datos){
-                alert("error-> "+datos);
-            }
-        });
-    });
-    
-}
-function cargaFondoC(datos){
-    $("#main-container #slider").css("background-image", "url(../imagenes/"+datos+")");
-}
-
 function cargarInvitacion(){
+    //$('#pop_inv_val').validate();
     var invt = $("#inv-cont").val();
     var pestana = $("#pestana-cont").val();
     var ids = $("#idp").val();

@@ -17,6 +17,7 @@ $face = $_GET['face'];
 $twit = $_GET['twit'];
 $gplus = $_GET['gplus'];
 $ytube = $_GET['ytube'];
+$t1 = $_GET['t1'];
 
 if($face==""){
     $face="#";
@@ -32,8 +33,5 @@ if($ytube==""){
 }
 $redes = $face.'|'.$twit.'|'.$gplus.'|'.$ytube;
 
-$query = "UPDATE pag_uno SET pestana = '$pest', titulo = '$tit', desctitulo = '$desc' , direccion = '$dir', telefono = '$tel', titulobien1 = '$titbien1', titulobien2 = '$titbien2', titulobien3 = '$titbien3', bien1 = '$bien1', bien2 = '$bien2', bien3 = '$bien3', redes = '$redes' WHERE idpag =$idp";
+$query = "UPDATE pag_uno SET pestana = '$pest', titulo = '$tit', desctitulo = '$desc' , direccion = '$dir', telefono = '$tel', titulobien1 = '$titbien1', titulobien2 = '$titbien2', titulobien3 = '$titbien3', bien1 = '$bien1', bien2 = '$bien2', bien3 = '$bien3', redes = '$redes', imagen1 = '$t1' WHERE idpag =$idp";
 $result = mysql_query($query);
-
-
-//echo $idp+" ->".$tit."- -".$desc;

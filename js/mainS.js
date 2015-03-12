@@ -9,10 +9,7 @@ function inicioS() {
     imagenS4();
     imagenS5();
     imagenS6();
-    
-    cargarFondo();
-        
-    $("#slider").on("click", funcSlider);
+
     $("#slogan").on("click", funcSlogan);
     $("#servs1").on("click", funcServ1);
     $("#servs2").on("click", funcServ2);
@@ -33,13 +30,7 @@ function inicioS() {
         width: 300
     });
     
-    $("#pop_imgserv").dialog({autoOpen: false,
-        buttons:{
-            OK:function(){
-                $(this).dialog("close");
-            }
-        },
-        width: 450});
+
     $("#pop_lema").dialog({autoOpen: false,
         buttons:{
             OK:function(){
@@ -47,7 +38,7 @@ function inicioS() {
                 cargarSlogan();
             }
         },
-        width: 450});
+        width: 300});
     $("#pop_serv1").dialog({autoOpen: false,
         buttons:{
             OK:function(){
@@ -97,6 +88,7 @@ function inicioS() {
         },
         width: 450});
 }
+
 function panelS(){
     var button = $('#loginButton');
     var box = $('#loginBox');
@@ -121,9 +113,9 @@ function funcr3(){
     ($("#form-adminS").dialog("isOpen") == false) ? $("#form-adminS").dialog("open") : $("#form-adminS").dialog("close") ;   
 }
 
-function funcSlider(){
+/*function funcSlider(){
     ($("#pop_imgserv").dialog("isOpen") == false) ? $("#pop_imgserv").dialog("open") : $("#pop_imgserv").dialog("close") ;   
-}
+}*/
 
 function funcSlogan(){
     ($("#pop_lema").dialog("isOpen") == false) ? $("#pop_lema").dialog("open") : $("#pop_lema").dialog("close") ;   
@@ -341,7 +333,7 @@ function mostrarS6(input) {
     }
 }
 
-function cargarFondo(){
+/*function cargarFondo(){
     $("input[name='img-servicio']").on("change", function () {
         var a = $("input[name='img-servicio']").val();
         
@@ -366,7 +358,7 @@ function cargarFondo(){
         });
     });
     
-}
+}*/
 
 function cargarSlogan(){
     var slogan = $("#lema-serv").val();
@@ -390,9 +382,9 @@ function muestraError(data){
     alert("error "+data);
 }
 
-function cargaFondoS(datos){
+/*function cargaFondoS(datos){
     $("#main-container #slider").css("background-image", "url(../imagenes/"+datos+")");
-}
+}*/
 
 function cargarServ1(){
     var formData = new FormData($("#formServ1")[0]);
@@ -507,3 +499,11 @@ function cargarServ6(){
         }
     });
 }
+
+/*function AbreVentanaModal() {
+    var datos=new Array();
+   //alert("");
+    datos[0] = "imagen-fondo";
+    datos[1] = $("#ids").val();//$('#vvideo').val();
+    datos = showModalDialog('http://localhost/plantilla2/admin/pic-upload/index.php', datos, 'status:no;resizable:yes');
+}*/

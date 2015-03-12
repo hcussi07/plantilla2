@@ -18,6 +18,13 @@ $row = mysql_fetch_array($result);
         <meta charset="utf-8">
         <title><?= $row['pestana'] ?></title>
         <meta name="description" content="Descripcion de la página">
+
+        <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" >
+        <link rel="stylesheet" type="text/css" href="css/noneed.css" media="screen" >
+        <link rel="stylesheet" type="text/css" href="css/extralayers.css" media="screen" >
+        <link rel="stylesheet" type="text/css" href="css/settings.css" media="screen" >
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Raleway:100,200,300,700,800,900' rel='stylesheet' type='text/css'>
         <style>
             @import url(http://fonts.googleapis.com/css?family=Muli);
             *{margin:0; padding:0}
@@ -57,8 +64,8 @@ $row = mysql_fetch_array($result);
             #main-container .parallax{margin-top:10px;height:300px;background-repeat:no-repeat;background-attachment:fixed;background-size:cover; background-position:50% 50%}
             #main-container .parallax-1{background-image: url("imagenes/<?= $row['imagen2'] ?>");}
             #main-container .parallax h3, #main-container .parallax h4{text-transform:uppercase}
-            #main-container .parallax h4{color:#CCC;padding:80px 350px 5px 40px;font-size:20px}
-            #main-container .parallax h2{color:#FFF;padding:0px 350px 0px 40px;font-size:30px;text-transform:uppercase}
+            #main-container .parallax h4{color:#CCC;padding:80px 350px 5px 40px;font-size:20px;text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.68);}
+            #main-container .parallax h2{color:#FFF;padding:0px 350px 0px 40px;font-size:30px;text-transform:uppercase;text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.68);}
             footer{background:#474747;margin:0 auto;width:1100px; margin-top:10px; padding-bottom:20px}
             footer .table{display:table;width:100%}
             footer .table div{display:table-cell; color:#FFF}
@@ -113,8 +120,8 @@ $row = mysql_fetch_array($result);
             #admin #loginForm span a {color:#FFF; font-size:12px;}
             #admin input:focus {outline:none;}
         </style>
-        
-        
+
+
     </head>
 
     <body>
@@ -129,7 +136,7 @@ $row = mysql_fetch_array($result);
                     <div id="loginBox">                
                         <div id="loginForm">
                             <fieldset id="body">
-                                <a href="admin/index.php?idpag=<?=$row['idpag']?>" class="login">Editar Pagina</a>
+                                <a href="admin/index.php?idpag=<?= $row['idpag'] ?>" class="login">Editar Pagina</a>
                                 <a href="usuario/logout.php" class="loginR">Cerrar sesion</a>
                                 <!--input type="button" value="Restablecer" class="loginR" /-->                            
                             </fieldset>
@@ -142,7 +149,7 @@ $row = mysql_fetch_array($result);
             <?php
         }
         ?>
-        
+
         <div id="main-container">
             <header>
                 <div id="logo"><a href="index.php"><img src="imagenes/<?= $row['logo'] ?>"></a></div>
@@ -157,9 +164,81 @@ $row = mysql_fetch_array($result);
                 </div>
                 <div class="clear"></div>
             </header>
-            <div id="slider">
-                <img src="imagenes/<?= $row['imagen1'] ?>" >
+            <div class="tp-banner-container">
+                <?php
+                $img = explode("|", $row['imagen1'])
+                ?>
+                <div class="tp-banner">
+                    <ul>
+                        <li data-transition="slidevertical" data-slotamount="1" data-masterspeed="500"  data-saveperformance="off"  data-title="Slide">
+                            <img src="imagenes/<?=$img[0]?>"  alt="slidebg1" data-bgposition="left top" data-bgfit="cover" data-bgrepeat="no-repeat">
+                            <div class="tp-caption light_heavy_70_shadowed lfb ltt tp-resizeme"
+                                 data-x="center" data-hoffset="250"
+                                 data-y="center" data-voffset="-70"
+                                 data-speed="600"
+                                 data-start="800"
+                                 data-easing="Power4.easeOut"
+                                 data-splitin="none"
+                                 data-splitout="none"
+                                 data-elementdelay="0.01"
+                                 data-endelementdelay="0.1"
+                                 data-endspeed="500"
+                                 data-endeasing="Power4.easeIn"
+                                 style="z-index: 2; max-width: auto; max-height: auto; white-space: nowrap;"><?=$img[1]?></div>
+                            <div class="tp-caption light_medium_30_shadowed lfb ltt tp-resizeme"
+                                 data-x="center" data-hoffset="225"
+                                 data-y="center" data-voffset="40"
+                                 data-speed="600"
+                                 data-start="900"
+                                 data-easing="Power4.easeOut"
+                                 data-splitin="none"
+                                 data-splitout="none"
+                                 data-elementdelay="0.01"
+                                 data-endelementdelay="0.1"
+                                 data-endspeed="500"
+                                 data-endeasing="Power4.easeIn"
+                                 style="z-index: 3; max-width: auto; max-height: auto; white-space: nowrap;"><?=$img[2]?>
+                            </div>
+
+
+                        </li>
+                        <li data-transition="fade" data-slotamount="7" data-masterspeed="500" data-saveperformance="on"  data-title="Intro Slide">
+                            <img src="imagenes/<?=$img[3]?>"  alt="slidebg1" data-bgposition="left top" data-bgfit="cover" data-bgrepeat="no-repeat">
+                            <div class="tp-caption light_heavy_70_shadowed lfb ltt tp-resizeme"
+                                 data-x="center" data-hoffset="250"
+                                 data-y="center" data-voffset="-70"
+                                 data-speed="600"
+                                 data-start="800"
+                                 data-easing="Power4.easeOut"
+                                 data-splitin="none"
+                                 data-splitout="none"
+                                 data-elementdelay="0.01"
+                                 data-endelementdelay="0.1"
+                                 data-endspeed="500"
+                                 data-endeasing="Power4.easeIn"
+                                 style="z-index: 2; max-width: auto; max-height: auto; white-space: nowrap;"><?=$img[4]?></div>
+                            <div class="tp-caption light_medium_30_shadowed lfb ltt tp-resizeme"
+                                 data-x="center" data-hoffset="225"
+                                 data-y="center" data-voffset="40"
+                                 data-speed="600"
+                                 data-start="900"
+                                 data-easing="Power4.easeOut"
+                                 data-splitin="none"
+                                 data-splitout="none"
+                                 data-elementdelay="0.01"
+                                 data-endelementdelay="0.1"
+                                 data-endspeed="500"
+                                 data-endeasing="Power4.easeIn"
+                                 style="z-index: 3; max-width: auto; max-height: auto; white-space: nowrap;"><?=$img[5]?>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="tp-bannertimer"></div>
+                </div>
             </div>
+            <!--div id="slider">
+                <img src="imagenes/<?= $row['imagen1'] ?>" >
+            </div-->
             <div id="container">
                 <div class="table bg1">
                     <div>
@@ -218,5 +297,26 @@ $row = mysql_fetch_array($result);
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
         <script src="js/main.js"></script>
 
+        <script type="text/javascript" src="js/jquery.themepunch.tools.min.js"></script>
+        <script type="text/javascript" src="js/jquery.themepunch.revolution.min.js"></script>
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                jQuery('.tp-banner').revolution(
+                        {
+                            delay: 9000,
+                            startwidth: 1170,
+                            startheight: 500,
+                            hideThumbs: 10,
+                            navigationType: "none",
+                            navigationArrows: "solo",
+                            touchenabled: "on",
+                            onHoverStop: "on",
+                            swipe_velocity: 0.7,
+                            swipe_min_touches: 1,
+                            swipe_max_touches: 1,
+                            drag_block_vertical: false,
+                        });
+            });
+        </script>
     </body>
 </html>
