@@ -21,11 +21,11 @@ $row1 = mysql_fetch_array($result);
         <meta charset="utf-8">
         <title><?=$row1['pestana_cont']?></title>
         <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+        <!--link href="../css/jquery-ui.css" rel="stylesheet"-->
         
         <link rel="stylesheet" href="css/reveal.css">
         <link rel="stylesheet" href="css/mystyle.css">
 
-        
         <script src="js/jquery-pack.js" type="text/javascript"></script>
         <script src="js/jquery.min.js" type="text/javascript"></script>
         <!-- required plugin for ajax file upload -->
@@ -34,6 +34,8 @@ $row1 = mysql_fetch_array($result);
         <script src="js/jquery.reveal.js" type="text/javascript"></script>
         <!-- resizing image -->
         <script src="js/jquery.imgareaselect.min.js" type="text/javascript"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+        <script src="../js/jquery.rss.js"></script>
         <style>
             @import url(http://fonts.googleapis.com/css?family=Muli);
             @import url(http://fonts.googleapis.com/css?family=Open+Sans:800);
@@ -50,9 +52,7 @@ $row1 = mysql_fetch_array($result);
             .clear{float:none;clear:both;}
             p{display:block}
             #admin{position: absolute;top:0; right: 10px; z-index: 2;cursor: pointer;}
-            #admin1{float: left; padding-right: 15px; padding-left: 15px;color: #F7F7F7}
-            
-            #fin{float: right; display: block; padding-right: 5px; padding-left: 5px; background-color: #66afe9}
+
             #pop_pestanaC{overflow: auto; display: none;}
 
             #main-container{margin:0 auto;width:1100px;}
@@ -73,6 +73,17 @@ $row1 = mysql_fetch_array($result);
 
             #main-container #mapCanvas{width:100%;height:300px;border:#DADADA solid 1px;margin-top:20px}
 
+            #main-container #utiles{display:table;width:100%;margin-top:20px}
+            #main-container #utiles div{display:table-cell; vertical-align:top}
+            #main-container #utiles div#widget{width:300px;}
+            #main-container #utiles div#widget h3{ padding:5px; background:#900; color:#FFF;font-family: 'Open Sans', sans-serif;}
+            #main-container #utiles div#widget aside{border:#900 solid 1px;padding:5px; font-size:11px}
+            #main-container #utiles div#widget aside.noticias{overflow:auto; height:300px}
+            #main-container #utiles div#widget ul {list-style-type: none; margin: 0px; padding: 0px; }
+            #main-container #utiles div#widget li {padding: 10px;border-top: 1px dashed #AAA;background-color: #EFEFEF;}
+            #main-container #utiles div#widget li:first-child {border-top: none;}
+            #main-container #utiles div#widget li:nth-child(2n) {background-color: white;}
+
             #main-container #formulario{display:table;width:100%; margin-top:20px}
             #main-container #formulario ul{display:table-row}
             #main-container #formulario ul li{ display:table-cell; width:50%; vertical-align:middle; padding:10px 0}
@@ -85,7 +96,7 @@ $row1 = mysql_fetch_array($result);
             #main-container .btn{cursor:pointer;padding:10px 20px;margin-top:5px;border-radius:4px;}
             #main-container .btn:hover{outline:0;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)}
             #main-container label.error{display:block; color:#337AB7;font-size:11px; padding:2px}
-
+            .contar{color: #1c94c4}
             .sb1 :hover{border:solid 2px #BB0000; cursor: crosshair; background: #CCC;opacity:0.8; filter:alpha(opacity=60); z-index: 11; position: relative}
             footer{background:#474747;margin:0 auto;width:1100px; margin-top:10px; padding-bottom:20px}
             footer .table{display:table;width:100%}
@@ -141,6 +152,21 @@ $row1 = mysql_fetch_array($result);
             #admin #loginForm span a:hover {color:#66afe9 ; font-size:12px;}
             #admin input:focus {outline:none;}
         </style>
+
+        <link rel=Stylesheet href="css/<?=$row['estilo']?>.css" type="text/css">
+
+        <script type="text/javascript">
+
+            $(document).ready(function(){
+
+              $("#rss-feeds").rss("http://www.boliviaentusmanos.com/noticias/rss.php", {
+                 limit: 10,
+                 effect: 'slideFastSynced'
+              });
+            });
+
+        </script>
+
         
         <script type="text/javascript">
             $(document).ready(createUploader);
@@ -270,7 +296,7 @@ $row1 = mysql_fetch_array($result);
                 $('#h').val(selection.height);
             }
         </script>
-        
+
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
         <?php
             $coor = explode(",",$row1['cordenadas']);
@@ -411,7 +437,7 @@ $row1 = mysql_fetch_array($result);
                 <input type="hidden" value="<?=$row1['inv_cont']?>" id="cant_inv"/>
                 <textarea name="inv-cont" id="inv-cont" rows="5" cols="30" maxlength="200" required="true" placeholder="200 caracteres"><?=$row1['inv_cont']?></textarea>
             </div>
-            <p id="contador"></p>
+            <p id="contador" class="contar"></p>
             
         </div>
         <div id="admin">
@@ -492,30 +518,46 @@ $row1 = mysql_fetch_array($result);
                     <h3>Nos encantaría escuchar de usted!</h3>
                     <p id="inv_out"><?=$row1['inv_cont']?></p>
                 </div>
-                <div id="formulario">
-                    <form id="commentForm" name="commentForm" method="post" enctype="application/x-www-form-urlencoded" action="amarillas/enviarcon.php">
-                        <ul>
-                            <li>Nombre:(*)</li>
-                            <li><input name="enombre" type="text" id="enombre" class="required form-control" maxlength="50"></li>
-                        </ul>
-                        <ul>
-                            <li>Teléfono:(*)</li>
-                            <li><input name="etelefono" type="text" id="etelefono" class="required form-control" maxlength="50"></li>
-                        </ul>
-                        <ul>
-                            <li>E-Mail:(*)</li>
-                            <li><input name="eemail" type="text" id="eemail" class="required email form-control" maxlength="50"></li>
-                        </ul>
-                        <ul>
-                            <li>Comentario:</li>
-                            <li><textarea name="ecomentario" rows="5" id="ecomentario" class="required form-control"></textarea></li>
-                        </ul>
-                        <ul>
-                            <li> </li>
-                            <li><input name="button" type="submit" class="btn btn-primary" id="button" value="Enviar Mensaje"> 
-                                o llamenos: <?= $row['telefono'] ?></li>
-                        </ul>
-                    </form>
+                <div id="utiles">
+                    <div id="formulario">
+                        <form id="commentForm" name="commentForm" method="post" enctype="application/x-www-form-urlencoded" action="amarillas/enviarcon.php">
+                            <ul>
+                                <li>Nombre:(*)</li>
+                                <li><input name="enombre" type="text" id="enombre" class="required form-control" maxlength="50"></li>
+                            </ul>
+                            <ul>
+                                <li>Teléfono:(*)</li>
+                                <li><input name="etelefono" type="text" id="etelefono" class="required form-control" maxlength="50"></li>
+                            </ul>
+                            <ul>
+                                <li>E-Mail:(*)</li>
+                                <li><input name="eemail" type="text" id="eemail" class="required email form-control" maxlength="50"></li>
+                            </ul>
+                            <ul>
+                                <li>Comentario:</li>
+                                <li><textarea name="ecomentario" rows="5" id="ecomentario" class="required form-control"></textarea></li>
+                            </ul>
+                            <ul>
+                                <li> </li>
+                                <li><input name="button" type="submit" class="btn btn-primary" id="button" value="Enviar Mensaje">
+                                    o llamenos: <?= $row['telefono'] ?> </li>
+                            </ul>
+                        </form>
+                    </div>
+
+                    <div id="widget">
+
+                        <h3>CAMBIO DE MONEDA</h3>
+                        <aside>
+                            <iframe scrolling="No" src="http://www.boliviaentusmanos.com/cambio.php" width="280" height="150" frameborder="0"></iframe>
+                        </aside>
+                        <h3>NOTICIAS DE BOLIVIA</h3>
+                        <aside class="noticias">
+                            <div id="rss-feeds"></div>
+                        </aside>
+
+                    </div>
+
                 </div>
             </div>
 
@@ -534,7 +576,7 @@ $row1 = mysql_fetch_array($result);
                 <div class="w2">
                     <h4>Siguenos</h4>
                     <?php
-                    $red = explode("|", $row['redes']);
+                        $red = explode("|", $row['redes']);
                     ?>
                     <ul>
                         <li><a href="<?= $red[0] ?>" target="_blank" class="follow f"> </a></li>
@@ -545,13 +587,14 @@ $row1 = mysql_fetch_array($result);
                 </div>
             </div>
         </footer>
-        
+
         <!--script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script-->
-        <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <!--script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script-->
+        <script src="../js/jquery-ui.js"></script>
         <script>window.jQuery || document.write('<script src="../js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
         <script src="../js/plugins.js"></script>
+        <script src="../js/main.js"></script>
         <script src="../js/mainC.js"></script>
-        <script src="../js/jquery.validate.js" type="text/javascript"></script>
         
     </body>
 </html>

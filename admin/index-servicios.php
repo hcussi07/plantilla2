@@ -22,6 +22,7 @@ $row1 = mysql_fetch_array($result1);
         <meta charset="utf-8">
         <title><?= $row1['pestana_serv'] ?></title>
         <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+        <!--link href="../css/jquery-ui.css" rel="stylesheet"-->
 
         <link rel="stylesheet" href="css/reveal.css">
         <link rel="stylesheet" href="css/mystyle.css">
@@ -183,7 +184,7 @@ $row1 = mysql_fetch_array($result1);
             #admin1{float: left; padding-right: 15px; padding-left: 15px;color: #F7F7F7}
 
             #fin{float: right; display: block; padding-right: 5px; padding-left: 5px; background-color: #66afe9}
-            #form-adminS{overflow: auto; display: none;}
+
 
             #main-container{margin:0 auto;width:1100px;}
             #main-container header{border-top:#FF8D2C solid 5px; padding:30px 0 10px 0}
@@ -212,7 +213,7 @@ $row1 = mysql_fetch_array($result1);
             #main-container .slogan h2{ text-align:center; padding:50px 10px; color:#333;border-bottom:#FF8D2C solid 5px; }
 
             .sb1 :hover, #servs1:hover, #servs2:hover, #servs3:hover, #servs4:hover, #servs5:hover, #servs6:hover{border:solid 2px #BB0000; cursor: crosshair; background: #CCC;opacity:0.8; filter:alpha(opacity=60); z-index: 11; position: relative}
-
+            .contar{color: #1c94c4}
             footer{background:#474747;margin:0 auto;width:1100px; margin-top:10px; padding-bottom:20px}
             footer .table{display:table;width:100%}
             footer .table div{display:table-cell; color:#FFF}
@@ -267,78 +268,94 @@ $row1 = mysql_fetch_array($result1);
             #admin #loginForm span a:hover {color:#66afe9 ; font-size:12px;}
             #admin input:focus {outline:none;}
         </style>
+
+        <link rel=Stylesheet href="css/<?=$row['estilo']?>.css" type="text/css">
     </head>
 
     <body>
         <input type="hidden" id="ids" value="<?= $row1['idserv'] ?>"/>
         <div id="pop_lema" title="Slogan">
-            <textarea type="text" name="lema-serv" id="lema-serv" rows="5" cols="30"><?= $row1['lema_serv'] ?></textarea>
+            <input type="hidden"  id="clv" value="<?= $row1['lema_serv'] ?>"/>
+            <textarea type="text" name="lema-serv" id="lema-serv" rows="5" cols="30" maxlength="250"><?= $row1['lema_serv'] ?></textarea>
+            <label id="cl1" class="contar"></label>
         </div>
         <div id="pop_serv1" title="Servicio 1">
             <form method="POST" id="formServ1" enctype="multipart/form-data">
-                <input type="hidden" value="<?= $row1['idserv'] ?>" id="ids1" name="ids1"/>
+                <input type="hidden" value="<?= $row1['idserv'] ?>" id="ids1" name="ids1" />
                 <label for="serv-1">Servicio: </label><br>
-                <input type="text" name="serv-1" id="serv-1" size="40" value="<?= $row1['serv_1'] ?>"/><br>
+                <input type="hidden"  id="cs1v" value="<?= $row1['serv_1'] ?>"/>
+                <input type="text" name="serv-1" id="serv-1" size="32" value="<?= $row1['serv_1'] ?>" maxlength="30" required/><label id="cs1" class="contar"></label><br>
                 <label for="img-ser1">Imagen: </label><br>
                 <input type="file" name="img-ser1" id="img-ser1" accept="image/jpeg/png" data-val="true" value="<?= $row1['img_ser1'] ?>" required="true"/><br>
                 <label for="sdesc-1">Descripcion: </label><br>
-                <textarea name="sdesc-1" id="sdesc-1" rows="5" cols="40" required="true"><?= $row1['sdesc_1'] ?></textarea>
+                <input type="hidden"  id="cd1v" value="<?= $row1['sdesc_1'] ?>"/>
+                <textarea name="sdesc-1" id="sdesc-1" rows="5" cols="40" required="true" maxlength="250" ><?= $row1['sdesc_1'] ?></textarea><label id="cd1" class="contar"></label>
             </form>
         </div>
 
         <div id="pop_serv2" title="Servicio 2">
             <form method="POST" id="formServ2" enctype="multipart/form-data">
-                <input type="hidden" value="<?= $row1['idserv'] ?>" id="ids2" name="ids2"/>
+                <input type="hidden" value="<?= $row1['idserv'] ?>" id="ids2" name="ids2" />
                 <label for="serv-2">Servicio: </label><br>
-                <input type="text" name="serv-2" id="serv-2" size="40" value="<?= $row1['serv_2'] ?>"/><br>
+                <input type="hidden"  id="cs2v" value="<?= $row1['serv_2'] ?>"/>
+                <input type="text" name="serv-2" id="serv-2" size="32" value="<?= $row1['serv_2'] ?>" maxlength="30" required/><label id="cs2" class="contar"></label><br>
                 <label for="img-ser2">Imagen: </label><br>
-                <input type="file" name="img-ser2" id="img-ser2" accept="image/jpeg/png" data-val="true" value="<?= $row1['img_ser2'] ?>"/><br>
+                <input type="file" name="img-ser2" id="img-ser2" accept="image/jpeg/png" data-val="true" value="<?= $row1['img_ser2'] ?>" required="true"/><br>
                 <label for="sdesc-2">Descripcion: </label><br>
-                <textarea name="sdesc-2" id="sdesc-2" rows="5" cols="40"><?= $row1['sdesc_2'] ?></textarea>
+                <input type="hidden"  id="cd2v" value="<?= $row1['sdesc_2'] ?>"/>
+                <textarea name="sdesc-2" id="sdesc-2" rows="5" cols="40" required="true" maxlength="250" ><?= $row1['sdesc_2'] ?></textarea><label id="cd2" class="contar"></label>
             </form>
         </div>
         <div id="pop_serv3" title="Servicio 3">
             <form method="POST" id="formServ3" enctype="multipart/form-data">
-                <input type="hidden" value="<?= $row1['idserv'] ?>" id="ids3" name="ids3"/>
+                <input type="hidden" value="<?= $row1['idserv'] ?>" id="ids3" name="ids3" />
                 <label for="serv-3">Servicio: </label><br>
-                <input type="text" name="serv-3" id="serv-3" size="40" value="<?= $row1['serv_3'] ?>"/><br>
+                <input type="hidden"  id="cs3v" value="<?= $row1['serv_3'] ?>"/>
+                <input type="text" name="serv-3" id="serv-3" size="32" value="<?= $row1['serv_3'] ?>" maxlength="30" required/><label id="cs3" class="contar"></label><br>
                 <label for="img-ser3">Imagen: </label><br>
-                <input type="file" name="img-ser3" id="img-ser3" accept="image/jpeg/png" data-val="true" value="<?= $row1['img_ser3'] ?>"/><br>
+                <input type="file" name="img-ser3" id="img-ser3" accept="image/jpeg/png" data-val="true" value="<?= $row1['img_ser3'] ?>" required="true"/><br>
                 <label for="sdesc-3">Descripcion: </label><br>
-                <textarea name="sdesc-3" id="sdesc-3" rows="5" cols="40" ><?= $row1['sdesc_3'] ?></textarea>
+                <input type="hidden"  id="cd3v" value="<?= $row1['sdesc_3'] ?>"/>
+                <textarea name="sdesc-3" id="sdesc-3" rows="5" cols="40" required="true" maxlength="250" ><?= $row1['sdesc_3'] ?></textarea><label id="cd3" class="contar"></label>
             </form>
         </div>
         <div id="pop_serv4" title="Servicio 4">
             <form method="POST" id="formServ4" enctype="multipart/form-data">
-                <input type="hidden" value="<?= $row1['idserv'] ?>" id="ids4" name="ids4"/>
+                <input type="hidden" value="<?= $row1['idserv'] ?>" id="ids4" name="ids4" />
                 <label for="serv-4">Servicio: </label><br>
-                <input type="text" name="serv-4" id="serv-4" size="40" value="<?= $row1['serv_4'] ?>"/><br>
+                <input type="hidden"  id="cs4v" value="<?= $row1['serv_4'] ?>"/>
+                <input type="text" name="serv-4" id="serv-4" size="32" value="<?= $row1['serv_4'] ?>" maxlength="30" required/><label id="cs4" class="contar"></label><br>
                 <label for="img-ser4">Imagen: </label><br>
-                <input type="file" name="img-ser4" id="img-ser4" accept="image/jpeg/png" data-val="true" value="<?= $row1['img_ser4'] ?>"/><br>
+                <input type="file" name="img-ser4" id="img-ser4" accept="image/jpeg/png" data-val="true" value="<?= $row1['img_ser4'] ?>" required="true"/><br>
                 <label for="sdesc-4">Descripcion: </label><br>
-                <textarea name="sdesc-4" id="sdesc-4" rows="5" cols="40"><?= $row1['sdesc_4'] ?></textarea>
+                <input type="hidden"  id="cd4v" value="<?= $row1['sdesc_4'] ?>"/>
+                <textarea name="sdesc-4" id="sdesc-4" rows="5" cols="40" required="true" maxlength="250" ><?= $row1['sdesc_4'] ?></textarea><label id="cd4" class="contar"></label>
             </form>
         </div>
         <div id="pop_serv5" title="Servicio 5">
             <form method="POST" id="formServ5" enctype="multipart/form-data">
-                <input type="hidden" value="<?= $row1['idserv'] ?>" id="ids5" name="ids5"/>
+                <input type="hidden" value="<?= $row1['idserv'] ?>" id="ids5" name="ids5" />
                 <label for="serv-5">Servicio: </label><br>
-                <input type="text" name="serv-5" id="serv-5" size="40" value="<?= $row1['serv_5'] ?>"/><br>
+                <input type="hidden"  id="cs5v" value="<?= $row1['serv_5'] ?>"/>
+                <input type="text" name="serv-5" id="serv-5" size="32" value="<?= $row1['serv_5'] ?>" maxlength="30" required/><label id="cs5" class="contar"></label><br>
                 <label for="img-ser5">Imagen: </label><br>
-                <input type="file" name="img-ser5" id="img-ser5" accept="image/jpeg/png" data-val="true" value="<?= $row1['img_ser5'] ?>"/><br>
+                <input type="file" name="img-ser5" id="img-ser5" accept="image/jpeg/png" data-val="true" value="<?= $row1['img_ser5'] ?>" required="true"/><br>
                 <label for="sdesc-5">Descripcion: </label><br>
-                <textarea name="sdesc-5" id="sdesc-5" rows="5" cols="40"><?= $row1['sdesc_5'] ?></textarea>
+                <input type="hidden"  id="cd5v" value="<?= $row1['sdesc_5'] ?>"/>
+                <textarea name="sdesc-5" id="sdesc-5" rows="5" cols="40" required="true" maxlength="250" ><?= $row1['sdesc_5'] ?></textarea><label id="cd5" class="contar"></label>
             </form>
         </div>
         <div id="pop_serv6" title="Servicio 6">
             <form method="POST" id="formServ6" enctype="multipart/form-data">
-                <input type="hidden" value="<?= $row1['idserv'] ?>" id="ids6" name="ids6"/>
+                <input type="hidden" value="<?= $row1['idserv'] ?>" id="ids6" name="ids6" />
                 <label for="serv-6">Servicio: </label><br>
-                <input type="text" name="serv-6" id="serv-6" size="40" value="<?= $row1['serv_6'] ?>"/><br>
+                <input type="hidden"  id="cs6v" value="<?= $row1['serv_6'] ?>"/>
+                <input type="text" name="serv-6" id="serv-6" size="32" value="<?= $row1['serv_6'] ?>" maxlength="30" required/><label id="cs6" class="contar"></label><br>
                 <label for="img-ser6">Imagen: </label><br>
-                <input type="file" name="img-ser6" id="img-ser6" accept="image/jpeg/png" data-val="true" value="<?= $row1['img_ser6'] ?>"/><br>
+                <input type="file" name="img-ser6" id="img-ser6" accept="image/jpeg/png" data-val="true" value="<?= $row1['img_ser6'] ?>" required="true"/><br>
                 <label for="sdesc-6">Descripcion: </label><br>
-                <textarea name="sdesc-6" id="sdesc-6" rows="5" cols="40"><?= $row1['sdesc_6'] ?></textarea>
+                <input type="hidden"  id="cd6v" value="<?= $row1['sdesc_6'] ?>"/>
+                <textarea name="sdesc-6" id="sdesc-6" rows="5" cols="40" required="true" maxlength="250" ><?= $row1['sdesc_6'] ?></textarea><label id="cd6" class="contar"></label>
             </form>
         </div>
 
@@ -363,9 +380,7 @@ $row1 = mysql_fetch_array($result1);
             </div>
 
         </div>
-        <div id="form-adminS" title="Pestaña">
 
-        </div>
 
         <div id="main-container">
             <header>
@@ -495,11 +510,14 @@ $row1 = mysql_fetch_array($result1);
                 </div>
             </div>
         </footer>
-        <!--script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script-->
-        <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <!--script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script-->
+        <script src="../js/jquery-ui.js"></script>
         <script>window.jQuery || document.write('<script src="../js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
         <script src="../js/plugins.js"></script>
+        <script src="../js/main.js"></script>
         <script src="../js/mainS.js"></script>
+
         <!--script src="js/croplogica.js"></script-->
     </body>
 </html>

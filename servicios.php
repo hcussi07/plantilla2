@@ -117,6 +117,8 @@ $row = mysql_fetch_array($result);
             #admin input:focus {outline:none;}
 
         </style>
+
+        <link rel=Stylesheet href="admin/css/<?=$row1['estilo']?>.css" type="text/css">
     </head>
 
     <body>
@@ -253,6 +255,6 @@ $row = mysql_fetch_array($result);
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
-        <script src="js/main.js"></script>
+        <script src="js/mainI.js"></script>
     </body>
 </html>
